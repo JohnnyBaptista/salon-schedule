@@ -9,8 +9,10 @@ import Estoque from "../pages/Estoque/Estoque";
 import Clientes from "../pages/Clientes/Clientes";
 import ProtectedRoute from "./ProtectedRoutes";
 import Login from "../pages/Login";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import Funcionarios from "../pages/Funcionario/Funcionarios";
+import Agendamento from "../pages/Agendamento/Agendamento";
 
 function MainRoutes() {
   const defaultProtectedRouteProps = useMemo(
@@ -40,6 +42,12 @@ function MainRoutes() {
         title: "Funcionarios",
         path: "funcionarios",
         element: <Funcionarios />,
+      },
+      {
+        icon: <CalendarMonthIcon />,
+        title: "Agendamentos",
+        path: "agendamento",
+        element: <Agendamento />,
       },
       {
         icon: <ShoppingCartIcon />,
