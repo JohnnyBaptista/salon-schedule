@@ -49,7 +49,6 @@ function Clientes() {
     createData("Solange", "(18) 99882-0000", "emailexemplo@gmail.com"),
   ];
 
-  console.log({ rows });
 
   const columns = [
     createColumn("Nome"),
@@ -93,6 +92,7 @@ function Clientes() {
   ), [editModalData]);
 
   const openClientsModal = (rowData) => {
+
     let editModalData;
     if (!!rowData) {
       editModalData = createModalEditData(rowData);

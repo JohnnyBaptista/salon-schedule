@@ -1,16 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import CustomTable from "../../components/Table/Table";
 import { Button, Container, Grid, TextField, styled } from "@mui/material";
 import Modal from "../../components/Modal/Modal";
+import createModalEditData from "../../utils/createModalEditData";
 
 function Estoque() {
-  const [open, setOpen] = useState(false);
+  const [open, setModalOpen] = useState(false);
+  const [editModalData, setEditModalData] = useState({});
+
+  const ModalBody = useMemo(
+    () => (
+      <>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          value={editModalData.name || ""}
+          label="Nome"
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="quantity"
+          value={editModalData.quantity || ""}
+          label="Quantidade"
+          type="number"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="category"
+          label="Categoria"
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="price"
+          label="Preço"
+          value={editModalData.price || ""}
+          type="number"
+          fullWidth
+          variant="standard"
+        />
+      </>
+    ),
+    [editModalData]
+  );
+
+  const openClientsModal = (rowData) => {
+    let editModalData;
+    
+    if (!!rowData) {
+      editModalData = createModalEditData(rowData);
+      console.log({editModalData})
+      setEditModalData(editModalData);
+    }
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setEditModalData({});
+    setModalOpen(false);
+  };
+
   function createData(name, qnt, categoria, preco) {
     return [
-      { content: name },
-      { content: qnt },
-      { content: categoria },
-      { content: `R$ ${preco.toFixed(2)}` },
+      { content: name, id: 'name' },
+      { content: qnt, id: 'quantity' },
+      { content: categoria, id: 'category' },
+      { content: `${preco.toFixed(2)}`, id: 'price' },
     ];
   }
 
@@ -25,8 +88,6 @@ function Estoque() {
     createData("Condicionador", 9, "Cabelo", 22.9),
     createData("Creme massageador", 10, "Pele", 24),
   ];
-
-  console.log({ rows });
 
   const columns = [
     createColumn("Nome do produto"),
@@ -47,51 +108,20 @@ function Estoque() {
           lg={12}
         >
           <h1>Meu estoque</h1>
-          <Button onClick={() => setOpen(true)}>
+          <Button onClick={() => openClientsModal()}>
             Adicionar novo produto +
           </Button>
         </Grid>
-        <CustomTable columns={columns} rows={rows} />
+        <CustomTable columns={columns} rows={rows} onEdit={openClientsModal} />
       </Container>
       <Modal
         open={open}
-        setOpen={setOpen}
+        handleClose={handleClose}
+        setOpen={setModalOpen}
         title="Adicionar novo produto"
         description="Preencha os dados para adicionar um novo produto"
       >
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Nome"
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          margin="dense"
-          id="quantity"
-          label="Quantidade"
-          type="number"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          margin="dense"
-          id="category"
-          label="Categoria"
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          margin="dense"
-          id="price"
-          label="Preço"
-          type="number"
-          fullWidth
-          variant="standard"
-        />
+        {ModalBody}
       </Modal>
     </>
   );
