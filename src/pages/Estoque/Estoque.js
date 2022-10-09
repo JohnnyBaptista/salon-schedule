@@ -68,8 +68,9 @@ function Estoque() {
     setModalOpen(false);
   };
 
-  function createData(name, qnt, categoria, preco) {
+  function createData(id, name, qnt, categoria, preco) {
     return [
+      { content: id, id: 'id' },
       { content: name, id: 'name' },
       { content: qnt, id: 'quantity' },
       { content: categoria, id: 'category' },
@@ -82,14 +83,15 @@ function Estoque() {
   }
 
   const rows = [
-    createData("Shampoo", 10, "Cabelo", 50),
-    createData("Esmalte X", 2, "Manicure/Pedicure", 60),
-    createData("Tinta de cabelo X", 4, "Cabelo", 40),
-    createData("Condicionador", 9, "Cabelo", 22.9),
-    createData("Creme massageador", 10, "Pele", 24),
+    createData(1,"Shampoo", 10, "Cabelo", 50),
+    createData(2,"Esmalte X", 2, "Manicure/Pedicure", 60),
+    createData(3,"Tinta de cabelo X", 4, "Cabelo", 40),
+    createData(4,"Condicionador", 9, "Cabelo", 22.9),
+    createData(5, "Creme massageador", 10, "Pele", 24),
   ];
 
   const columns = [
+    createColumn("ID"),
     createColumn("Nome do produto"),
     createColumn("Quantidade"),
     createColumn("Categoria"),

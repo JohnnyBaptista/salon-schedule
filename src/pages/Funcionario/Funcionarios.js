@@ -7,15 +7,6 @@ import Modal from "../../components/Modal/Modal";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import createModalEditData from "../../utils/createModalEditData";
 
-const StyledIoLogoWhatsapp = styled(IoLogoWhatsapp)({
-  cursor: "pointer",
-  height: "24px",
-  width: "24px",
-  "& :hover": {
-    color: "gray",
-  },
-});
-
 const StyledCalendarIcon = styled(CalendarMonthIcon)({
   cursor: "pointer",
   "& :hover": {
@@ -23,17 +14,16 @@ const StyledCalendarIcon = styled(CalendarMonthIcon)({
   },
 });
 
-function Clientes() {
+function Funcionarios() {
   const [openModal, setModalOpen] = useState(false);
   const [editModalData, setEditModalData] = useState({});
 
   function createData(id, name, telefone, email) {
     return [
-      { content: id, id: 'id' },
+      { content: id, id: "id" },
       { content: name, id: "name" },
       { content: telefone, id: "telephone" },
       { content: email, id: "email", label: "E-mail" },
-      { content: <StyledIoLogoWhatsapp size="lg" /> },
       { content: <StyledCalendarIcon /> },
     ];
   }
@@ -43,58 +33,58 @@ function Clientes() {
   }
 
   const rows = [
-    createData(1,"José", "(18) 99882-0000", "emailexemplo@gmail.com"),
-    createData(2,"Claudia", "(18) 99882-0000", "emailexemplo@gmail.com"),
-    createData(3,"Roberto", "(18) 99882-0000", "emailexemplo@gmail.com"),
-    createData(4,"Maria", "(18) 99882-0000", "emailexemplo@gmail.com"),
-    createData(5,"Solange", "(18) 99882-0000", "emailexemplo@gmail.com"),
+    createData(1, "José", "(18) 99882-0000", "emailexemplo@gmail.com"),
+    createData(2, "Claudia", "(18) 99882-0000", "emailexemplo@gmail.com"),
+    createData(3, "Roberto", "(18) 99882-0000", "emailexemplo@gmail.com"),
+    createData(4, "Maria", "(18) 99882-0000", "emailexemplo@gmail.com"),
+    createData(5, "Solange", "(18) 99882-0000", "emailexemplo@gmail.com"),
   ];
-
 
   const columns = [
     createColumn("ID"),
     createColumn("Nome"),
     createColumn("Telefone"),
     createColumn("Email"),
-    createColumn("Enviar mensagem"),
     createColumn("Agendar"),
   ];
 
-  const ModalBody = useMemo(() => (
-    <>
-      <TextField
-        autoFocus
-        value={editModalData ? editModalData.name : ""}
-        margin="dense"
-        id="name"
-        label="Nome"
-        type="text"
-        fullWidth
-        variant="standard"
-      />
-      <TextField
-        margin="dense"
-        id="email"
-        value={editModalData.email ? editModalData.email : ""}
-        label="Email"
-        type="email"
-        fullWidth
-        variant="standard"
-      />
-      <TextField
-        margin="dense"
-        id="telephone"
-        value={editModalData.telephone ? editModalData.telephone : ""}
-        label="Telefone"
-        type="text"
-        fullWidth
-        variant="standard"
-      />
-    </>
-  ), [editModalData]);
+  const ModalBody = useMemo(
+    () => (
+      <>
+        <TextField
+          autoFocus
+          value={editModalData ? editModalData.name : ""}
+          margin="dense"
+          id="name"
+          label="Nome"
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="email"
+          value={editModalData.email ? editModalData.email : ""}
+          label="Email"
+          type="email"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="telephone"
+          value={editModalData.telephone ? editModalData.telephone : ""}
+          label="Telefone"
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+      </>
+    ),
+    [editModalData]
+  );
 
   const openClientsModal = (rowData) => {
-
     let editModalData;
     if (!!rowData) {
       editModalData = createModalEditData(rowData);
@@ -119,9 +109,9 @@ function Clientes() {
           md={12}
           lg={12}
         >
-          <h1>Meus clientes</h1>
+          <h1>Meus funcionários</h1>
           <Button onClick={() => openClientsModal()}>
-            Adicionar novo cliente +
+            Adicionar um novo funcionario +
           </Button>
         </Grid>
         <CustomTable columns={columns} rows={rows} onEdit={openClientsModal} />
@@ -139,5 +129,5 @@ function Clientes() {
   );
 }
 
-export default Clientes;
+export default Funcionarios;
 

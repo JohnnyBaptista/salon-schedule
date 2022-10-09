@@ -9,6 +9,8 @@ import Estoque from "../pages/Estoque/Estoque";
 import Clientes from "../pages/Clientes/Clientes";
 import ProtectedRoute from "./ProtectedRoutes";
 import Login from "../pages/Login";
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import Funcionarios from "../pages/Funcionario/Funcionarios";
 
 function MainRoutes() {
   const defaultProtectedRouteProps = useMemo(
@@ -32,6 +34,12 @@ function MainRoutes() {
         title: "Clientes",
         path: "clientes",
         element: <Clientes />,
+      },
+      {
+        icon: <EngineeringIcon />,
+        title: "Funcionarios",
+        path: "funcionarios",
+        element: <Funcionarios />,
       },
       {
         icon: <ShoppingCartIcon />,
