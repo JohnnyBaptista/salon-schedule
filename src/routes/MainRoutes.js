@@ -5,8 +5,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Layout from "../components/Layout/Layout";
 import Main from "../pages/Main";
-import Estoque from "../pages/Estoque";
-import Clientes from "../pages/Clientes";
+import Estoque from "../pages/Estoque/Estoque";
+import Clientes from "../pages/Clientes/Clientes";
 import ProtectedRoute from "./ProtectedRoutes";
 import Login from "../pages/Login";
 
