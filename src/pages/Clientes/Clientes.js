@@ -28,7 +28,6 @@ const StyledCalendarIcon = styled(CalendarMonthIcon)({
 function Clientes() {
   const [openModal, setModalOpen] = useState(false);
   const [editModalData, setEditModalData] = useState({});
-  const [clientData, setClientData] = useState({});
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
@@ -147,7 +146,6 @@ function Clientes() {
   const handleCreateNew = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data);
     const payload = {
       name: data.get("name"),
       birth: data.get("birth"),
@@ -156,12 +154,22 @@ function Clientes() {
     };
     try {
       const response = await ClientService.create(payload);
-      if(response.length > 0) {
+      if (response.length > 0) {
+        setClients((prev) => [
+          ...prev,
+          {
+            id: response[0],
+            birth: payload.birth,
+            email: payload.email,
+            name: payload.name,
+            telephone: payload.telephone,
+          },
+        ]);
         alert(`${payload.name} inserido!`);
         setModalOpen(false);
       }
     } catch (error) {
-      alert('Ocorreu algum erro, tente novamente!');
+      alert("Ocorreu algum erro, tente novamente!");
       console.error(error);
     }
   };
