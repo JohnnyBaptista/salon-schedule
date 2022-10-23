@@ -41,7 +41,7 @@ function CustomTable({ columns, rows, onEdit }) {
         </TableHead>
         <TableBody>
           {rows.map((row, idx) => (
-            <TableRow key={row.id}>
+            <TableRow key={`ROW-${row.id}-${idx.toString()}`}>
               {row.map((info, key) => (
                 <TableCell align="center" key={`${info.content}-${key.toString()}`}>
                   {info.content}

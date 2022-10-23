@@ -6,20 +6,28 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-
-export default function Modal({ open, setOpen, title, description, handleClose, children }) {;
-
+import Box from "@mui/material/Box";
+export default function Modal({
+  open,
+  title,
+  description,
+  handleClose,
+  children,
+  handleOk,
+}) {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{title} </DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       {description && (
         <DialogContentText textAlign="center">{description}</DialogContentText>
       )}
-      <DialogContent>{children}</DialogContent>
-      <DialogActions>
-        <Button onClick={() => handleClose()}>Cancelar</Button>
-        <Button onClick={() => handleClose()}>Adicionar</Button>
-      </DialogActions>
+      <Box component="form" onSubmit={handleOk}>
+        <DialogContent>{children}</DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose()}>Cancelar</Button>
+          <Button type="submit">Adicionar</Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 }

@@ -1,9 +1,5 @@
-import {  useMemo } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { useMemo } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -35,7 +31,6 @@ function MainRoutes() {
       authenticationPath: "/",
     };
   };
-
 
   const routes = useMemo(
     () => [
@@ -87,18 +82,16 @@ function MainRoutes() {
           }
         >
           {routes.map((route, idx) => (
-            <>
-              <Route
-                key={`route-${idx.toString()}-${route.title}`}
-                path={route.path}
-                element={
-                  <ProtectedRoute
-                    {...defaultProtectedRouteProps()}
-                    protectedComponent={route.element}
-                  />
-                }
-              />
-            </>
+            <Route
+              key={`route-${idx.toString()}-${route.title}`}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  {...defaultProtectedRouteProps()}
+                  protectedComponent={route.element}
+                />
+              }
+            />
           ))}
         </Route>
       </Routes>
@@ -107,4 +100,3 @@ function MainRoutes() {
 }
 
 export default MainRoutes;
-
