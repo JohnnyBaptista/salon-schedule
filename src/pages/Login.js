@@ -11,6 +11,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import _ from 'lodash';
+import UserService from "../services/userService";
+import { validateToken } from "../utils/tokenValidation";
 
 function Copyright(props) {
   return (
@@ -36,16 +39,35 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event) => {
+export default function SignInSide(props) {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
+    const payload = {
+      username: data.get("user"),
       password: data.get("password"),
-    });
+    }
+    try {
+      const responseData = await UserService.login(payload);
+      console.log({responseData})
+      if(!_.isEmpty(responseData)){
+        localStorage.setItem('salon_token', JSON.stringify(responseData.token))
+        navigate('/dash')
+      }
+    } catch (error) {
+      console.error(error)
+    }
   };
-  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const validToken = validateToken();
+    if(validToken) {
+      navigate('/dash');
+    }
+  }, [navigate])
 
   return (
     <ThemeProvider theme={theme}>
@@ -109,7 +131,6 @@ export default function SignInSide() {
                 id="user"
                 label="Usuario"
                 name="user"
-                autoComplete="user"
                 autoFocus
               />
               <TextField
@@ -127,7 +148,6 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, background: 'black'}}
-                onClick={() => navigate('/dash/home')}
               >
                 Entrar
               </Button>

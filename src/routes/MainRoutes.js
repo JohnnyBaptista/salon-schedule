@@ -1,5 +1,9 @@
-import { useMemo } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useCallback, useMemo } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -10,18 +14,30 @@ import Clientes from "../pages/Clientes/Clientes";
 import ProtectedRoute from "./ProtectedRoutes";
 import Login from "../pages/Login";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import EngineeringIcon from '@mui/icons-material/Engineering';
+import EngineeringIcon from "@mui/icons-material/Engineering";
 import Funcionarios from "../pages/Funcionario/Funcionarios";
 import Agendamento from "../pages/Agendamento/Agendamento";
+import UserService from "../services/userService";
+import _ from "lodash";
 
 function MainRoutes() {
-  const defaultProtectedRouteProps = useMemo(
-    () => ({
-      isAuthenticated: true,
+  const defaultProtectedRouteProps = () => {
+    const lcstrg = localStorage.getItem("salon_token");
+    const token = JSON.parse(lcstrg);
+    const hasToken = _.isEmpty(token);
+    if (!hasToken) {
+      return {
+        isAuthenticated: true,
+        authenticationPath: "/",
+      };
+    }
+    return {
+      isAuthenticated: false,
       authenticationPath: "/",
-    }),
-    []
-  );
+    };
+  };
+
+  console.log(defaultProtectedRouteProps())
 
   const routes = useMemo(
     () => [
@@ -67,7 +83,7 @@ function MainRoutes() {
           path="/dash"
           element={
             <ProtectedRoute
-              {...defaultProtectedRouteProps}
+              {...defaultProtectedRouteProps()}
               protectedComponent={<Layout routes={routes} />}
             />
           }
@@ -79,7 +95,7 @@ function MainRoutes() {
                 path={route.path}
                 element={
                   <ProtectedRoute
-                    {...defaultProtectedRouteProps}
+                    {...defaultProtectedRouteProps()}
                     protectedComponent={route.element}
                   />
                 }
