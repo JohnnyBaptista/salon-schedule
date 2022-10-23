@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import {  useMemo } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,7 +17,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import Funcionarios from "../pages/Funcionario/Funcionarios";
 import Agendamento from "../pages/Agendamento/Agendamento";
-import UserService from "../services/userService";
 import _ from "lodash";
 
 function MainRoutes() {
@@ -37,7 +36,6 @@ function MainRoutes() {
     };
   };
 
-  console.log(defaultProtectedRouteProps())
 
   const routes = useMemo(
     () => [

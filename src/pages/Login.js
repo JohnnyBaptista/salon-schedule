@@ -52,7 +52,6 @@ export default function SignInSide(props) {
     }
     try {
       const responseData = await UserService.login(payload);
-      console.log({responseData})
       if(!_.isEmpty(responseData)){
         localStorage.setItem('salon_token', JSON.stringify(responseData.token))
         navigate('/dash')

@@ -5,7 +5,6 @@ export default function ProtectedRoute({
   protectedComponent,
 }) {
   if (isAuthenticated) {
-    console.log('entrou')
     return protectedComponent;
   }
 

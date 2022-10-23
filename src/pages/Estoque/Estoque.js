@@ -57,7 +57,6 @@ function Estoque() {
     
     if (!!rowData) {
       editModalData = createModalEditData(rowData);
-      console.log({editModalData})
       setEditModalData(editModalData);
     }
     setModalOpen(true);
