@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import Delete from "@mui/icons-material/Delete";
 
 const StyledEditIcon = styled(EditIcon)({
   cursor: "pointer",
@@ -17,7 +18,14 @@ const StyledEditIcon = styled(EditIcon)({
   },
 });
 
-function CustomTable({ columns, rows, onEdit }) {
+const StyledDeleteIcon = styled(Delete)({
+  cursor: "pointer",
+  "& :hover": {
+    color: "gray",
+  },
+});
+
+function CustomTable({ columns, rows, onEdit, onDelete }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -37,6 +45,7 @@ function CustomTable({ columns, rows, onEdit }) {
               );
             })}
             <TableCell align="center">Editar</TableCell>
+            <TableCell align="center">Deletar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,6 +58,9 @@ function CustomTable({ columns, rows, onEdit }) {
               ))}
               <TableCell align="center">
                 <StyledEditIcon onClick={() => onEdit(row)} />
+              </TableCell>
+              <TableCell align="center">
+                <StyledDeleteIcon onClick={() => onDelete(row)} />
               </TableCell>
             </TableRow>
           ))}

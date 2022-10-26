@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import createModalEditData from "../../utils/createModalEditData";
 import ClientService from "../../services/clientService";
 import moment from "moment";
+import _ from "lodash";
 
 const StyledIoLogoWhatsapp = styled(IoLogoWhatsapp)({
   cursor: "pointer",
@@ -37,6 +38,8 @@ function Clientes() {
     }
     getClients();
   }, []);
+
+  const isEditing = useMemo(() => !_.isEmpty(editModalData), [editModalData]);
 
   function createData(id, name, telefone, email, birth) {
     return [
@@ -133,6 +136,8 @@ function Clientes() {
     let editModalData;
     if (!!rowData) {
       editModalData = createModalEditData(rowData);
+      const birth = clients.find((cln) => cln.id === editModalData.id).birth;
+      editModalData.birth = moment(birth).format("YYYY-DD-MM");
       setEditModalData(editModalData);
     }
     setModalOpen(true);
@@ -148,29 +153,59 @@ function Clientes() {
     const data = new FormData(event.currentTarget);
     const payload = {
       name: data.get("name"),
-      birth: data.get("birth"),
+      birth: data.get("birth") | null,
       telephone: data.get("telephone"),
       email: data.get("email"),
     };
+
     try {
-      const response = await ClientService.create(payload);
-      if (response.length > 0) {
-        setClients((prev) => [
-          ...prev,
-          {
-            id: response[0],
-            birth: payload.birth,
-            email: payload.email,
-            name: payload.name,
-            telephone: payload.telephone,
-          },
-        ]);
-        alert(`${payload.name} inserido!`);
-        setModalOpen(false);
+      if (isEditing) {
+        const wasEdited = await ClientService.update(payload, editModalData.id);
+        if (!!wasEdited) {
+          const clientIndex = clients.findIndex(
+            (item) => item.id === editModalData.id
+          );
+          const newArr = [...clients];
+          newArr[clientIndex] = { id: editModalData.id, ...payload };
+          setClients(newArr);
+        }
+      } else {
+        const response = await ClientService.create(payload);
+        if (response.length > 0) {
+          setClients((prev) => [
+            ...prev,
+            {
+              id: response[0],
+              birth: payload.birth,
+              email: payload.email,
+              name: payload.name,
+              telephone: payload.telephone,
+            },
+          ]);
+          alert(`${payload.name} inserido!`);
+        }
       }
     } catch (error) {
       alert("Ocorreu algum erro, tente novamente!");
       console.error(error);
+    } finally {
+      setModalOpen(false);
+    }
+  };
+
+  const handleDelete = async (row) => {
+    const id = row[0].content;
+    const confirmed = window.confirm(`Deseja mesmo deletar ${row[1].content}?`);
+    if (confirmed) {
+      try {
+        const response = await ClientService.deleteClient(id);
+        if (!!response) {
+          const updatedArray = clients.filter((item) => item.id !== id);
+          setClients(updatedArray);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -190,16 +225,22 @@ function Clientes() {
             Adicionar novo cliente +
           </Button>
         </Grid>
-        <CustomTable columns={columns} rows={rows} onEdit={openClientsModal} />
+        <CustomTable
+          columns={columns}
+          rows={rows}
+          onEdit={openClientsModal}
+          onDelete={handleDelete}
+        />
       </Container>
       <Modal
         handleClose={handleClose}
         open={openModal}
-        isForm
         handleOk={handleCreateNew}
         setModalOpen={setModalOpen}
-        title="Adicionar novo cliente"
-        description="Preencha os dados para adicionar um novo cliente"
+        title={isEditing ? "Editar cliente" : "Adicionar novo cliente"}
+        description={
+          isEditing ? "" : `Preencha os dados para adicionar um novo cliente`
+        }
       >
         {ModalBody}
       </Modal>
