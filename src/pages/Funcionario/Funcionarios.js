@@ -201,8 +201,8 @@ function Funcionarios() {
         handleClose={handleClose}
         open={openModal}
         handleOk={handleCreateNew}
-        title="Adicionar novo cliente"
-        description="Preencha os dados para adicionar um novo cliente"
+        title="Adicionar novo funcionario"
+        description="Preencha os dados para adicionar um novo funcionario"
       >
         {ModalBody}
       </Modal>
