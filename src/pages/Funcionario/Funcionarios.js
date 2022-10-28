@@ -44,14 +44,6 @@ function Funcionarios() {
     return { name };
   }
 
-  // const rows = [
-  //   createData(1, "José", "(18) 99882-0000", "emailexemplo@gmail.com"),
-  //   createData(2, "Claudia", "(18) 99882-0000", "emailexemplo@gmail.com"),
-  //   createData(3, "Roberto", "(18) 99882-0000", "emailexemplo@gmail.com"),
-  //   createData(4, "Maria", "(18) 99882-0000", "emailexemplo@gmail.com"),
-  //   createData(5, "Solange", "(18) 99882-0000", "emailexemplo@gmail.com"),
-  // ];
-
   const rows = useMemo(
     () =>
       workers.length > 0
