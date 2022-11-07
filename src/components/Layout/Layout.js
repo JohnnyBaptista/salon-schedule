@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { renderRouterIcons } from "./layoutIcons";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -71,6 +71,14 @@ function Layout({ routes }) {
     setOpen(!open);
   };
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.pathname === '/dash') {
+      navigate('/dash/agendamento');
+    }
+  }, [location])
 
   return (
     <ThemeProvider theme={mdTheme}>

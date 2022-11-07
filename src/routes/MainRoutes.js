@@ -35,10 +35,10 @@ function MainRoutes() {
   const routes = useMemo(
     () => [
       {
-        icon: <DashboardIcon />,
-        title: "Inicio",
-        path: "home",
-        element: <Main />,
+        icon: <CalendarMonthIcon />,
+        title: "Agendamentos",
+        path: "agendamento",
+        element: <Agendamento />,
       },
       {
         icon: <PeopleIcon />,
@@ -51,12 +51,6 @@ function MainRoutes() {
         title: "Funcionarios",
         path: "funcionarios",
         element: <Funcionarios />,
-      },
-      {
-        icon: <CalendarMonthIcon />,
-        title: "Agendamentos",
-        path: "agendamento",
-        element: <Agendamento />,
       },
       {
         icon: <ShoppingCartIcon />,
