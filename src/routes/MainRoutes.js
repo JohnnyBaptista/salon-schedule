@@ -1,10 +1,9 @@
 import { useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Layout from "../components/Layout/Layout";
-import Main from "../pages/Main";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import Estoque from "../pages/Estoque/Estoque";
 import Clientes from "../pages/Clientes/Clientes";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -14,6 +13,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import Funcionarios from "../pages/Funcionario/Funcionarios";
 import Agendamento from "../pages/Agendamento/Agendamento";
 import _ from "lodash";
+import WhatsApp from "../pages/WhatsApp/WhatsApp";
 
 function MainRoutes() {
   const defaultProtectedRouteProps = () => {
@@ -52,11 +52,17 @@ function MainRoutes() {
         path: "funcionarios",
         element: <Funcionarios />,
       },
+      // {
+      //   icon: <ShoppingCartIcon />,
+      //   title: "Estoque",
+      //   path: "estoque",
+      //   element: <Estoque />,
+      // },
       {
-        icon: <ShoppingCartIcon />,
-        title: "Estoque",
-        path: "estoque",
-        element: <Estoque />,
+        icon: <WhatsAppIcon />,
+        title: "Conectar Whatsapp",
+        path: "wpp",
+        element: <WhatsApp />,
       },
     ],
     []

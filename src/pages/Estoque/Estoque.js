@@ -15,7 +15,7 @@ function Estoque() {
           autoFocus
           margin="dense"
           id="name"
-          value={editModalData.name || ""}
+          defaultValue={editModalData.name || ""}
           label="Nome"
           type="text"
           fullWidth
@@ -24,7 +24,7 @@ function Estoque() {
         <TextField
           margin="dense"
           id="quantity"
-          value={editModalData.quantity || ""}
+          defaultValue={editModalData.quantity || ""}
           label="Quantidade"
           type="number"
           fullWidth
@@ -42,7 +42,7 @@ function Estoque() {
           margin="dense"
           id="price"
           label="Preço"
-          value={editModalData.price || ""}
+          defaultValue={editModalData.price || ""}
           type="number"
           fullWidth
           variant="standard"
@@ -111,6 +111,9 @@ function Estoque() {
           <h1>Meu estoque</h1>
           <Button onClick={() => openClientsModal()}>
             Adicionar novo produto +
+          </Button>
+          <Button onClick={() => openClientsModal()}>
+            Criar categoria +
           </Button>
         </Grid>
         <CustomTable columns={columns} rows={rows} onEdit={openClientsModal} />

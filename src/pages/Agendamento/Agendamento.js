@@ -20,6 +20,7 @@ function Agendamento() {
     dt.map((d) => ({
       id: d.id,
       text: d.name,
+      telephone: d.telephone
     }));
 
   useEffect(() => {
@@ -46,13 +47,13 @@ function Agendamento() {
           id: item.id,
           allDay: false,
           client: item.client_id,
+          client_telephone: item.client_telephone.replace(/[^\w\s]/gi, '').replace(' ', ''),
           worker: item.worker_id,
           notes: item.price,
           title: item.work_description,
           startDate: item.startDate,
           endDate: item.endDate,
         }));
-        console.log({ response, mappedResponse });
         setAppointments(mappedResponse);
       } catch (error) {
         alert("Algo errado aconteceu!");

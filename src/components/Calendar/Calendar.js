@@ -3,6 +3,8 @@ import {
   EditingState,
   IntegratedEditing,
 } from "@devexpress/dx-react-scheduler";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   Scheduler,
   WeekView,
@@ -15,8 +17,12 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { Grid } from "@mui/material";
 import moment from "moment";
-import { useMemo } from "react";
+import { useState } from "react";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import styled from "styled-components";
+import WppService from "../../services/wppService";
+import _ from "lodash";
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +43,8 @@ const LabelComponent = (props) => {
 };
 
 const Calendar = ({ data, saveAppointment, selectData }) => {
-  const currentDate = useMemo(() => moment().format("MM/DD/YYYY"), []);
+  const [currentDate, setCurrentDate] = useState(moment().format("MM/DD/YYYY"));
+  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
 
   const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     const onSelectWorkerChange = (nextValue) => {
@@ -93,7 +100,29 @@ const Calendar = ({ data, saveAppointment, selectData }) => {
     }
   };
 
+  const sendMessage = async (data, name) => {
+    const to = data.client_telephone;
+    const date = moment(data.startDate).format("DD/MM");
+    const hour = moment(data.startDate).format("HH:mm");
+    setIsLoadingMessage(true);
+    try {
+      const response = await WppService.sendMessage(
+        to,
+        `Olá ${name}! Você tem um agendamento na Mercedes Hair Studio no dia ${date} as ${hour}. Não se esqueça, aguardamos você!`
+      );
+      if (!_.isEmpty(response)) {
+        alert("Mensagem enviada com sucesso!!");
+      }
+    } catch (error) {
+      alert("Ocorreu algum problema. Tente mais tarde");
+      window.location.reload();
+    } finally {
+      setIsLoadingMessage(false);
+    }
+  };
+
   const TooltipContent = ({ children, appointmentData, ...restProps }) => {
+    console.log(appointmentData);
     const worker = selectData.workers.find(
       (item) => item.id === appointmentData.worker
     );
@@ -124,6 +153,16 @@ const Calendar = ({ data, saveAppointment, selectData }) => {
               ? parseFloat(appointmentData.notes).toFixed(2)
               : "A definir"}
           </span>
+          <span style={{ marginTop: 10 }}>
+            {isLoadingMessage ? (
+              <CircularProgress color="success" />
+            ) : (
+              <WhatsAppIcon
+                style={{ cursor: "pointer" }}
+                onClick={() => sendMessage(appointmentData, client.text)}
+              />
+            )}
+          </span>
         </Grid>
       </AppointmentTooltip.Content>
     );
@@ -131,14 +170,34 @@ const Calendar = ({ data, saveAppointment, selectData }) => {
 
   return (
     <Container>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: 'flex-end'
+        }}
+      >
+        <span>Passar semana</span>
+        <div>
+          <KeyboardArrowLeftIcon
+            style={{ cursor: "pointer", fontSize: "40px" }}
+            onClick={() =>
+              setCurrentDate(moment(currentDate).subtract(7, "days"))
+            }
+          />
+          <KeyboardArrowRightIcon
+            style={{ cursor: "pointer", fontSize: "40px" }}
+            onClick={() => setCurrentDate(moment(currentDate).add(7, "days"))}
+          />
+        </div>
+      </div>
       <Scheduler data={data} locale="pt-BR">
         <ViewState defaultCurrentViewName="Week" currentDate={currentDate} />
         <EditingState onCommitChanges={saveAppointment} />
         <IntegratedEditing />
-        <WeekView startDayHour={8} endDayHour={20.5} />
+        <WeekView excludedDays={[0, 1, 6]} startDayHour={8} endDayHour={20.5} />
         <DayView startDayHour={8} endDayHour={20.5} />
-        <Toolbar />
-        <ViewSwitcher />
         <Appointments />
         <AppointmentTooltip
           showCloseButton
