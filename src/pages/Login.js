@@ -54,7 +54,7 @@ export default function SignInSide(props) {
       const responseData = await UserService.login(payload);
       if(!_.isEmpty(responseData)){
         localStorage.setItem('salon_token', JSON.stringify(responseData.token))
-        navigate('/dash')
+        window.location.reload();
       }
     } catch (error) {
       console.error(error)
@@ -66,7 +66,7 @@ export default function SignInSide(props) {
     if(validToken) {
       navigate('/dash');
     }
-  }, [navigate])
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>

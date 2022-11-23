@@ -48,7 +48,7 @@ function Clientes() {
       { content: telefone, id: "telephone" },
       { content: email, id: "email", label: "E-mail" },
       { content: birth, id: "birth", label: "Aniversário" },
-      { content: <StyledIoLogoWhatsapp /> },
+      // { content: <StyledIoLogoWhatsapp /> },
     ];
   }
 
@@ -78,7 +78,7 @@ function Clientes() {
     createColumn("Telefone"),
     createColumn("Email"),
     createColumn("Aniversário"),
-    createColumn("Enviar mensagem"),
+    // createColumn("Enviar mensagem"),
   ];
 
   const ModalBody = useMemo(

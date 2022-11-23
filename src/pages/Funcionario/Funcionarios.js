@@ -36,7 +36,7 @@ function Funcionarios() {
       { content: name, id: "name" },
       { content: telefone, id: "telephone" },
       { content: email, id: "email", label: "E-mail" },
-      { content: <StyledCalendarIcon /> },
+      // { content: <StyledCalendarIcon /> },
     ];
   }
 
@@ -59,7 +59,7 @@ function Funcionarios() {
     createColumn("Nome"),
     createColumn("Telefone"),
     createColumn("Email"),
-    createColumn("Agendar"),
+    // createColumn("Agendar"),
   ];
 
   const ModalBody = useMemo(

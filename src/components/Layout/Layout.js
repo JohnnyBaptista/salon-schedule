@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { renderRouterIcons } from "./layoutIcons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -80,6 +81,11 @@ function Layout({ routes }) {
     }
   }, [location])
 
+  const logOut = () => {
+    localStorage.removeItem('salon_token');
+    window.location.reload();
+  }
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -111,6 +117,7 @@ function Layout({ routes }) {
             >
               Meu salão
             </Typography>
+            <LogoutIcon style={{cursor: 'pointer'}} onClick={() => logOut()}/>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
