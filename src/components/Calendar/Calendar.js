@@ -10,9 +10,7 @@ import {
   WeekView,
   AppointmentForm,
   Appointments,
-  Toolbar,
   DayView,
-  ViewSwitcher,
   AppointmentTooltip,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { Grid } from "@mui/material";
@@ -122,7 +120,6 @@ const Calendar = ({ data, saveAppointment, selectData }) => {
   };
 
   const TooltipContent = ({ children, appointmentData, ...restProps }) => {
-    console.log(appointmentData);
     const worker = selectData.workers.find(
       (item) => item.id === appointmentData.worker
     );
@@ -196,7 +193,7 @@ const Calendar = ({ data, saveAppointment, selectData }) => {
         <ViewState defaultCurrentViewName="Week" currentDate={currentDate} />
         <EditingState onCommitChanges={saveAppointment} />
         <IntegratedEditing />
-        <WeekView excludedDays={[0, 1, 6]} startDayHour={8} endDayHour={20.5} />
+        <WeekView excludedDays={[0, 1]} startDayHour={8} endDayHour={20.5} />
         <DayView startDayHour={8} endDayHour={20.5} />
         <Appointments />
         <AppointmentTooltip

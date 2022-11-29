@@ -1,26 +1,19 @@
 import { useState, useEffect } from "react";
-import { Button, Container, Grid, TextField } from "@mui/material";
-import createModalEditData from "../../utils/createModalEditData";
-import WorkCard from "../../components/WorkCard/WorkCard";
-import { CardsContainer } from "./styles";
+import { Container } from "@mui/material";
 import JobsService from "../../services/jobService";
-import moment from "moment";
 import Calendar from "../../components/Calendar/Calendar";
-import _, { property, random } from "lodash";
 import ClientService from "../../services/clientService";
 import WorkerService from "../../services/workerService";
 
 function Agendamento() {
   const [appointments, setAppointments] = useState([]);
-  const [editModalData, setEditModalData] = useState({});
 
   const [selectData, setSelectData] = useState({});
-
   const mapSelectData = (dt) =>
     dt.map((d) => ({
       id: d.id,
       text: d.name,
-      telephone: d.telephone
+      telephone: d.telephone,
     }));
 
   useEffect(() => {
@@ -47,7 +40,9 @@ function Agendamento() {
           id: item.id,
           allDay: false,
           client: item.client_id,
-          client_telephone: item.client_telephone.replace(/[^\w\s]/gi, '').replace(' ', ''),
+          client_telephone: item.client_telephone
+            .replace(/[^\w\s]/gi, "")
+            .replace(" ", ""),
           worker: item.worker_id,
           notes: item.price,
           title: item.work_description,
@@ -67,7 +62,6 @@ function Agendamento() {
 
   const addNewAppointment = async (data, id) => {
     const hasErrors = [];
-    console.log({data})
     const payload = {
       id,
       work_description: data.title,
@@ -83,12 +77,15 @@ function Agendamento() {
       }
     }
     if (!hasErrors.length > 0) {
-      const response = await JobsService.saveJob(payload, id);
-      console.log({ response });
-      setAppointments((prev) => [...prev, { ...data, id }]);
+      await JobsService.saveJob(payload, id);
+      const client_telephone = selectData.clients
+        .find((item) => item.id === data.client)
+        .telephone.replace(/[^\w\s]/gi, "")
+        .replace(" ", "");
+      setAppointments((prev) => [...prev, { ...data, id, client_telephone }]);
     }
   };
-
+  // console.log({appointments})
   const updateAppointment = async (data, id) => {
     const payload = {
       work_description: data[id]?.title,
@@ -111,7 +108,7 @@ function Agendamento() {
   const saveAppointment = async ({ added, changed, deleted }) => {
     let data = [...appointments];
     if (!!added) {
-      const id = Date.now()
+      const id = Date.now();
       await addNewAppointment(added, id);
     } else if (!!changed) {
       const id = Object.keys(changed)[0];
@@ -126,7 +123,7 @@ function Agendamento() {
       }
     } else if (deleted !== undefined) {
       const response = await deleteAppointment(deleted);
-      if(response.status === 200) {
+      if (response.status === 200) {
         data = data.filter((appointment) => appointment.id !== deleted);
         setAppointments(data);
       }

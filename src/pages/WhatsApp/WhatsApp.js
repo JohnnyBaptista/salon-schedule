@@ -3,10 +3,14 @@ import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import WppService from "../../services/wppService";
 import { QRCodeSVG } from "qrcode.react";
+import CircularProgress from "@mui/material/CircularProgress";
+import useIsFirstRender from "../../utils/useIsFirstRender";
 
 function WhatsApp() {
   const [qrCode, setQrCode] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
+  const isFirstRender = useIsFirstRender();
+
   useEffect(() => {
     async function getQrCode() {
       const response = await WppService.status();
@@ -18,36 +22,35 @@ function WhatsApp() {
         setQrCode(response.qrCode);
       }
     }
-    const interval = setInterval(() => {
+    if (isFirstRender) {
       getQrCode();
-    }, 5000);
+    } else {
+      const interval = setInterval(() => {
+        getQrCode();
+      }, 8000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [isFirstRender]);
   return (
     <Container>
-      <Grid
-        mx="auto"
-        mb={5}
-        justifyContent="space-between"
-        display="flex"
-        md={12}
-        lg={12}
-      >
+      <Grid mx="auto" mb={5} justifyContent="space-between" display="flex">
         <h1>Conectar no WhatsApp</h1>
       </Grid>
-      <Grid
-        mx="auto"
-        mb={5}
-        justifyContent="center"
-        display="flex"
-        md={12}
-        lg={12}
-      >
+      <Grid mx="auto" mb={5} justifyContent="center" display="flex">
         {authenticated ? (
           <h2>Você já está conectado ao WhatsApp!</h2>
         ) : (
-          <QRCodeSVG size={300} value={qrCode} renderAs="canvas" />
+          <>
+            {!authenticated && qrCode === null ? (
+              <>
+                {" "}
+                <h2>Carregando o QRCode</h2> <CircularProgress />{" "}
+              </>
+            ) : (
+              <QRCodeSVG size={500} value={qrCode} renderAs="canvas" />
+            )}
+          </>
         )}
       </Grid>
     </Container>
